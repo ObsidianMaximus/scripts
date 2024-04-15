@@ -18,7 +18,7 @@ sudo systemctl start /dev/zram0
 
 #Finally execute this command - 
 
-echo "# Reduce the inclination to swap
+echo "# Increase the inclination to swap to zram
 vm.swappiness=100" | sudo tee -a /etc/sysctl.conf
 
 
