@@ -1,13 +1,16 @@
 #!/bin/bash
 
+# Editing fstab, incase swapfile is turned on, then disable it.
+sudo sed -i 's/\/swapfile/#\/swapfile/g' /etc/fstab
+
 # Installing zram-generator and editing its contents
 sudo apt install systemd-zram-generator #&& sudo nvim /etc/systemd/zram-generator.conf
 
 
 echo "[zram0] 
 compression-algorithm = zstd
-zram-fraction = 1
-max-zram-size = 100000" | sudo tee /etc/systemd/zram-generator.conf
+zram-fraction = $1
+max-zram-size = 1000000" | sudo tee /etc/systemd/zram-generator.conf
 
 #echo "[zram0] 
 #compression-algorithm = zstd
