@@ -36,7 +36,7 @@ def liboffice():
     tb_rm = input("\nDo you REALLY wish to remove libre office entirely from your system? [y/n] ")
 
     if tb_rm.lower() == "y":
-        os.system("sudo apt purge libreoffice* -y && sudo apt autoremove")
+        os.system("sudo apt purge libreoffice* -y && sudo apt autoremove -y")
         print("\nLibre office has been succesfully removed from your system!\n")
     else:
         print("\nAbort\n")
