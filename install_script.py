@@ -10,26 +10,36 @@ def purge_ff():
     ff_rm = input("\nDo you REALLY wish to remove firefox entirely from your system? [y/n] ")
 
     if ff_rm.lower() == "y":
-        os.system("sudo apt purge firefox* && rm -rf ~/.mozilla && sudo rm -rf /etc/firefox*")
+        os.system("sudo apt purge firefox* -y && rm -rf ~/.mozilla && sudo rm -rf /etc/firefox*")
         if(os.path.isdir("/usr/lib/firefox")):
             os.system("sudo rm -rf /usr/lib/firefox")
         if(os.path.isdir("/usr/lib/firefox-addons")):
             os.system("sudo rm -rf /usr/lib/firefox-addons")
-        print("\nFirefox has been succesfully removed from your system!")
+        print("\nFirefox has been succesfully removed from your system!\n")
     else:
-        print("\nAbort")
+        print("\nAbort\n")
 
 def purge_thunder():
     '''This function fully removes thunderbird email client'''
     tb_rm = input("\nDo you REALLY wish to remove thunderbird entirely from your system? [y/n] ")
 
     if tb_rm.lower() == "y":
-        os.system("sudo apt purge thunderbird*")
+        os.system("sudo apt purge thunderbird* -y")
         if(os.path.isdir("~/.thunderbird")):
             os.system("rm -rf ~/.thunderbird")
-        print("\nThunderbird has been succesfully removed from your system!")
+        print("\nThunderbird has been succesfully removed from your system!\n")
     else:
-        print("\nAbort")
+        print("\nAbort\n")
+
+def liboffice():
+    '''This function fully removes libre office'''
+    tb_rm = input("\nDo you REALLY wish to remove libre office entirely from your system? [y/n] ")
+
+    if tb_rm.lower() == "y":
+        os.system("sudo apt purge libreoffice* -y && sudo apt autoremove")
+        print("\nLibre office has been succesfully removed from your system!\n")
+    else:
+        print("\nAbort\n")
 
 def trim():
     '''This function enables TRIM on devices that have a SSD that supports it.'''
@@ -41,9 +51,9 @@ def trim():
     reduce_swap = subprocess.run(['cat', '/proc/sys/vm/swappiness'], stdout=subprocess.PIPE)
     if reduce_swap.stdout.decode(encoding='UTF-8')!=20:
         os.system('echo "vm.swappiness=20" | sudo tee -a /etc/sysctl.conf')
-        print("\nTRIM set up for running daily! [Along with reducing the inclination to swap.]")
+        print("\nTRIM set up for running daily! [Along with reducing the inclination to swap.]\n")
     else:
-        print("\nTRIM set up for running daily!")
+        print("\nTRIM set up for running daily!\n")
 
 
 def brave():
@@ -52,7 +62,7 @@ def brave():
     os.system("curl -O https://raw.githubusercontent.com/ObsidianMaximus/scripts/master/brave.sh && chmod +x brave.sh")
     subprocess.run(["./brave.sh"])
     os.system("rm brave.sh")
-    print("\nInstalled the brave browser successfully!")
+    print("\nInstalled the brave browser successfully!\n")
 
 def wifi_drivers():
     '''This function installs the wifi drivers for TP Link Archer T2U Plus [which uses rtl8812au]'''
@@ -60,9 +70,9 @@ def wifi_drivers():
 
     if install_drivers.lower() == "y":
         os.system("curl -O https://raw.githubusercontent.com/ObsidianMaximus/wifidrivers/master/commands_for_drivers.sh && chmod +x commands_for_drivers.sh && bash commands_for_drivers.sh && rm commands_for_drivers.sh")
-        print("\nSuccessfully installed the wifi drivers!")
+        print("\nSuccessfully installed the wifi drivers!\n")
     else:
-        print("Abort")
+        print("\nAbort\n")
 
 def zram_install():
     '''This function removes swapfile and installs ZRAM'''
@@ -70,19 +80,19 @@ def zram_install():
     yes_no = input("Do you wish to install ZRAM on your device? [y/n] ")
 
     if yes_no.lower() == 'y':
-        print("\nProcedding to install ZRAM...")
+        print("\nProcedding to install ZRAM...\n")
         os.system("curl -O https://raw.githubusercontent.com/ObsidianMaximus/scripts/master/zram.sh && chmod +x zram.sh")
         z_ratio = float(input("\nEnter the ZRAM ratio to set (This ratio is the ratio to your physical RAM, for eg 1 will mean allot same amount of ZRAM as the size of the physical ram): "))
         
         if z_ratio <= 0:
-            print("\nInvalid ratio entered, setting default ZRAM ratio to 2 [edit this ratio in \'/etc/systemd/zram-generator.conf\']")
+            print("\nInvalid ratio entered, setting default ZRAM ratio to 2 [edit this ratio in \'/etc/systemd/zram-generator.conf\n']")
             subprocess.run(["./zram.sh 2"])
         else:
             print(f"\nSetting the ZRAM ratio to {z_ratio}\n")
             subprocess.run(["./zram.sh", str(z_ratio)])
-            print("\nSuccessfully configured ZRAM on your device, please reboot to allow the changes to take effect.")
+            print("\nSuccessfully configured ZRAM on your device, please reboot to allow the changes to take effect.\n")
     else:
-        print("\nAbort")
+        print("\nAbort\n")
 
 
 def main():
@@ -90,6 +100,8 @@ def main():
     purge_ff()
 
     purge_thunder()
+
+    liboffice()
 
     trim_var = input("\nIf you have an SSD, you should enable TRIM to trim the ssd and improve it's lifespan. Enable TRIM? [y/n] ")
     if trim_var.lower() == "y":
